@@ -87,10 +87,9 @@
       min-width: 100%; min-height: 100%;
       width: auto; height: auto;
       object-fit: cover;
-      opacity: 0;
-      transition: opacity 1.2s ease;
+      opacity: .55;
     }
-    .hero-vid video.loaded { opacity: .5; }
+    
 
     /* MOBILE FALLBACK — poster image */
     .hero-poster {
@@ -690,31 +689,14 @@
   ]; // ← verander naar echte partners
   /* ────────────────────────────────────────────────────────── */
 
-  /* Force video autoplay — works on all browsers */
+  /* Force video autoplay */
   (function() {
-    function tryPlay() {
-      var v = document.getElementById('hero-video');
-      if (!v) return;
-      v.muted = true;
-      var p = v.play();
-      if (p !== undefined) {
-        p.catch(function() {
-          // If autoplay blocked, play on first interaction
-          document.addEventListener('click', function() { v.play(); }, { once: true });
-          document.addEventListener('touchstart', function() { v.play(); }, { once: true });
-        });
-      }
-      // Fade in when ready
-      v.addEventListener('canplay', function() {
-        v.style.opacity = '0.5';
-        v.style.transition = 'opacity 1.5s ease';
-      });
-    }
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', tryPlay);
-    } else {
-      tryPlay();
-    }
+    var v = document.getElementById('hero-video');
+    if (!v) return;
+    v.muted = true;
+    v.play().catch(function() {
+      document.addEventListener('click', function() { v.play(); }, { once: true });
+    });
   })();
 
   /* WhatsApp links */
@@ -727,9 +709,7 @@
   document.getElementById('mail-contact').href = `mailto:${EMAIL}`;
   document.getElementById('foot-mail').href    = `mailto:${EMAIL}`;
 
-  /* Video fade in when loaded */
-  const vid = document.getElementById('hero-video');
-  if (vid) vid.addEventListener('canplay', () => vid.classList.add('loaded'));
+
 
   /* Ticker */
   const ticker = document.getElementById('ticker');
